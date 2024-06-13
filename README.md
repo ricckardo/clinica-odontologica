@@ -22,8 +22,16 @@ Una vez dentro de la raíz del proyecto, si queremos desarrollar la voista lo ha
 cd Clinica-MVC
 ```
 
-El servidor para la View debería estar corriendo en http://localhost:5500/ la url base es http://localhost:5500/index.html 
-El servidor para la Bakcend debería estar corriendo en http://localhost:8080/ + los paths definidos para la API en SpringBoot
+El servidor para la View debería estar corriendo en 
+```bash
+http://localhost:5500/ la url base es http://localhost:5500/index.html
+```
+
+
+El servidor para la Bakcend debería estar corriendo en 
+```bash
+http://localhost:8080/ + los paths definidos para la API en SpringBoot
+```
 
 
 ## Licencia
