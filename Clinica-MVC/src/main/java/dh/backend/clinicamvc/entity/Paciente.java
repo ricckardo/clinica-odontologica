@@ -36,7 +36,7 @@ public class Paciente {
      */
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "domicilio_id" , referencedColumnName = "id")
+    @JoinColumn(name = "id_domicilio" , referencedColumnName = "id")
     private Domicilio domicilio;
 
     /**

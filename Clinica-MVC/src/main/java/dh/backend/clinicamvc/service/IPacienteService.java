@@ -19,6 +19,6 @@ public interface IPacienteService {
 
     //Metodos con HQL - Hibernate - JPA
     Paciente buscarPacienteporDNI(String dni);
-
-    List<Paciente> buscarPacienteDomicilioPorProvincia(String provincia);
+//
+//    List<Paciente> buscarPacienteDomicilioPorProvincia(String provincia);
 }

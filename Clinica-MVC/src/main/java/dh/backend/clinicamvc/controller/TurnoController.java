@@ -121,7 +121,7 @@ public class TurnoController {
     }
 
 
-    @GetMapping("/fechas")
+    @GetMapping("/fechasPorterior")
     public ResponseEntity<List<TurnoResponseDto>> buscarTurnoPosteriorFechas(@RequestParam String fechaPosterior){
         LocalDate fechaPosteriorFormatter = LocalDate.parse(fechaPosterior,formatter);
 

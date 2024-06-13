@@ -62,12 +62,12 @@ public class PacienteService implements IPacienteService {
         return pacienteRepository.findByDNI(dni);
     }
 
-    @Override
-    public List<Paciente> buscarPacienteDomicilioPorProvincia(String provincia) {
-        LOGGER.info("Borrando Paciente por provincia: " + provincia  );
-        pacienteRepository.findByProvincia(provincia);
-        return null;
-    }
+//    @Override
+//    public List<Paciente> buscarPacienteDomicilioPorProvincia(String provincia) {
+//        LOGGER.info("Borrando Paciente por provincia: " + provincia  );
+//        pacienteRepository.findByProvincia(provincia);
+//        return null;
+//    }
 
 
 }
