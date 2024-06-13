@@ -36,10 +36,10 @@ http://localhost:8080/ + los paths definidos para la API en SpringBoot
 
 ## Licencia
 
-Este repositorio contiene código privado desarrollado por New Stage Solutions. El acceso y el uso de este código están restringidos a los empleados de New Stage Solutions para fines específicos dentro del ámbito de sus responsabilidades laborales.
+Este repositorio contiene código privado desarrollado por Backend I. El acceso y el uso de este código están restringidos a los empleados de Backend I para fines específicos dentro del ámbito de sus responsabilidades laborales.
 
-Cualquier distribución, reproducción o modificación de este código sin autorización expresa de New Stage Solutions está estrictamente prohibida.
+Cualquier distribución, reproducción o modificación de este código sin autorización expresa de Backend I está estrictamente prohibida.
 
 <p align="center">
-Derechos de autor © 2024 New Stage Solutions
+Derechos de autor © 2024 Backend I
 </p>
