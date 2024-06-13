@@ -120,4 +120,18 @@ public class TurnoController {
         }
     }
 
+
+    @GetMapping("/fechas")
+    public ResponseEntity<List<TurnoResponseDto>> buscarTurnoPosteriorFechas(@RequestParam String fechaPosterior){
+        LocalDate fechaPosteriorFormatter = LocalDate.parse(fechaPosterior,formatter);
+
+        List<TurnoResponseDto> listaTurnosResponseDto = turnoService.buscarTurnoPosteriorFecha(fechaPosteriorFormatter);
+        if( listaTurnosResponseDto.size()> 0){
+            return ResponseEntity.ok(listaTurnosResponseDto);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
 }

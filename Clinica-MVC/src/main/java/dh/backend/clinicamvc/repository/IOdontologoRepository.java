@@ -16,4 +16,6 @@ public interface IOdontologoRepository extends JpaRepository<Odontologo, Integer
     //Buscar Odontologo por nombre
     @Query("SELECT o FROM Odontologo o WHERE LOWER(o.nombre) LIKE LOWER(CONCAT('%',:nombre,'%'))")
     List<Odontologo> findByNombreLike(@Param("nombre") String nombre);
+
+
 }

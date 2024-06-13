@@ -53,5 +53,21 @@ public class PacienteService implements IPacienteService {
         pacienteRepository.deleteById(id);
     }
 
+    /**
+     * Busqueda de metodos HQL
+     */
+    @Override
+    public Paciente buscarPacienteporDNI(String dni) {
+        LOGGER.info("Buscar Paciente por DNI: " + dni  );
+        return pacienteRepository.findByDNI(dni);
+    }
+
+    @Override
+    public List<Paciente> buscarPacienteDomicilioPorProvincia(String provincia) {
+        LOGGER.info("Borrando Paciente por provincia: " + provincia  );
+        pacienteRepository.findByProvincia(provincia);
+        return null;
+    }
+
 
 }

@@ -21,4 +21,7 @@ public interface ITurnoService {
 
     //Metodos con HQL - Hibernate - JPA
     List<TurnoResponseDto> buscarTurnoEntreFechas(LocalDate startDate, LocalDate endDate);
+    List<TurnoResponseDto> buscarTurnoPosteriorFecha(LocalDate startDate);
+
+
 }

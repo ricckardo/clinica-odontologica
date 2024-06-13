@@ -79,4 +79,27 @@ public class PacienteController {
         }
 
     }
+
+    @GetMapping("/dni")
+    public ResponseEntity<Paciente> buscarPacientePorDNI(@RequestParam String dni){
+        Paciente p = pacienteService.buscarPacienteporDNI(dni);
+        if(p != null){
+            return ResponseEntity.ok(p);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/provincia")
+    public ResponseEntity<List<Paciente>> buscarPacientePorProvincia(@RequestParam String provincia){
+        List<Paciente> listaPacientes = pacienteService.buscarPacienteDomicilioPorProvincia(provincia);
+        if( listaPacientes.size() > 0 ){
+            return ResponseEntity.ok(listaPacientes);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+
 }

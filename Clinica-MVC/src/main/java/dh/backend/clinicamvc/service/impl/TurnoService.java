@@ -151,6 +151,11 @@ public class TurnoService implements ITurnoService {
         turnoRepository.deleteById(id);
     }
 
+
+    /**
+     * Busqueda de metodos HQL
+     */
+
     @Override
     public List<TurnoResponseDto> buscarTurnoEntreFechas(LocalDate startDate, LocalDate endDate) {
         List<Turno> listaTurnos = turnoRepository.buscarTurnoEntreFechas(startDate,endDate);
@@ -164,6 +169,18 @@ public class TurnoService implements ITurnoService {
         return listaTurnosResponseDto;
     }
 
+    @Override
+    public List<TurnoResponseDto> buscarTurnoPosteriorFecha(LocalDate startDate) {
+        List<Turno> listaTurnoPosteriorFecha = turnoRepository.findByStartDateTurnosAfter(startDate);
+        List<TurnoResponseDto> listaTurnosResponseDto = new ArrayList<>();
+        for (Turno t: listaTurnoPosteriorFecha) {
+            listaTurnosResponseDto.add( mapToResponseDTO(t));
+        }
+        LOGGER.info("Tamaño de la lista de turnos posteriores a la fecha "+ startDate + " " + listaTurnosResponseDto.size());
+        return listaTurnosResponseDto;
+    }
+
+
     /*Metodo de mapeo*/
     private TurnoResponseDto mapToResponseDTO( Turno turno){
         TurnoResponseDto turnoResponseDto = modelMapper.map(turno, TurnoResponseDto.class);
@@ -172,4 +189,7 @@ public class TurnoService implements ITurnoService {
         LOGGER.info("Mapeando tipos de datos: " + turnoResponseDto);
         return turnoResponseDto;
     }
+
+
+
 }

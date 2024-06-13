@@ -56,6 +56,9 @@ public class OdontologoService implements IOdontologoService {
         odontologoRepository.deleteById(id);
     }
 
+    /**
+     * Busqueda de metodos HQL
+     */
     @Override
     public List<Odontologo> buscarPorApellido(String apellido) {
         LOGGER.info("Buscnado Odontolo por apellido : " + apellido  );

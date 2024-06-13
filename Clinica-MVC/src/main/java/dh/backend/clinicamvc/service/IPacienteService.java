@@ -16,4 +16,9 @@ public interface IPacienteService {
 
     void actualizarPaciente(Paciente paciente);
     void eliminarPaciente(Integer id);
+
+    //Metodos con HQL - Hibernate - JPA
+    Paciente buscarPacienteporDNI(String dni);
+
+    List<Paciente> buscarPacienteDomicilioPorProvincia(String provincia);
 }
