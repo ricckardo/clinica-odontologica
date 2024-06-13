@@ -15,7 +15,7 @@ form.addEventListener("submit", function (event) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ nombre, apellido, numeroMatricula: matricula }),
+    body: JSON.stringify({ nombre, apellido, numeroMatricula: matricula }), // JavaScript a JSON
   })
     .then((response) => response.json())
     .then((data) => {
