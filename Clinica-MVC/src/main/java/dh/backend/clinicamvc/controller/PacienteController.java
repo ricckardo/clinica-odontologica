@@ -1,12 +1,13 @@
 package dh.backend.clinicamvc.controller;
 
-import dh.backend.clinicamvc.model.Paciente;
+import dh.backend.clinicamvc.entity.Paciente;
 import dh.backend.clinicamvc.service.IPacienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pacientes")
@@ -44,9 +45,9 @@ public class PacienteController {
     * */
     @GetMapping("/{id}")
     public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Integer id){
-        Paciente paciente = pacienteService.buscarPacientesPorId(id);
-        if(paciente != null){
-            return ResponseEntity.ok(paciente);
+        Optional<Paciente> pacienteOptional = pacienteService.buscarPacientesPorId(id);
+        if(pacienteOptional.isPresent()){
+            return ResponseEntity.ok(pacienteOptional.get());
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -55,15 +56,27 @@ public class PacienteController {
     /*
     * http://localhost:8080/pacientes
     * */
-    @PutMapping
+    @PutMapping(produces = "application/json")
     public ResponseEntity<String>  actualizarPaciente(@RequestBody Paciente paciente){
-        pacienteService.actualizarPaciente(paciente);
-        return  ResponseEntity.ok("{\"messages\":  \"Paciente actualizado\"}");
+        Optional<Paciente> pacienteOptional = pacienteService.buscarPacientesPorId(paciente.getId());
+        if(pacienteOptional.isPresent()){
+            pacienteService.actualizarPaciente(paciente);
+            return  ResponseEntity.ok("{\"messages\":  \"Paciente actualizado\"}");
+        }else{
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<String>  borrarPaciente(@PathVariable Integer id) {
-        pacienteService.eliminarPaciente(id);
-        return ResponseEntity.ok("{\"messages\":  \"Paciente eliminado\"}");
+        Optional<Paciente> pacienteOptional = pacienteService.buscarPacientesPorId(id);
+        if(pacienteOptional.isPresent()){
+            pacienteService.eliminarPaciente(id);
+            return ResponseEntity.ok("{\"messages\":  \"Paciente eliminado\"}");
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 }
