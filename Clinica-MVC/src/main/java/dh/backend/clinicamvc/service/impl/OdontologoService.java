@@ -42,13 +42,13 @@ public class OdontologoService implements IOdontologoService {
     @Override
     public Optional<Odontologo> buscarOdontologoPorId(Integer id){
         // Optional, tipo de dato que guarda un dato si se que lo encuentra y un null su no lo encuentra
-        LOGGER.info("Odontologo encontraso : " + odontologoRepository.findById(id));
+        LOGGER.info("Odontologo encontraso con id : " + id );
         return odontologoRepository.findById(id);
     }
 
     @Override
     public List<Odontologo> buscarTodosLosOdontologos(){
-        LOGGER.info("Lista de Odontologos encontraso : " + odontologoRepository.findAll());
+        LOGGER.info("Lista de Odontologos encontrados : " + odontologoRepository.findAll().size());
         return odontologoRepository.findAll();
     }
 

@@ -44,7 +44,9 @@ public class TurnoService implements ITurnoService {
     @Override
     public TurnoResponseDto registrarTurno(TurnoRequestDto turnoRequestDto) throws BadRequestException {
         Optional<Paciente> p = pacienteRepository.findById(turnoRequestDto.getPaciente_id());
+        LOGGER.info("Paciente -  "+ p.isPresent() );
         Optional<Odontologo> o = odontologoRepository.findById(turnoRequestDto.getOdontologo_id());
+        LOGGER.info("Odontologo -  "+ o.isPresent()  );
         Turno turnoARegistrar = new Turno();
         Turno turnoGuardado = null;
         TurnoResponseDto turnoADevolver = null;
