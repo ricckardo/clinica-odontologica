@@ -12,9 +12,12 @@ public interface IPacienteRepository extends JpaRepository <Paciente, Integer> {
     @Query("SELECT p FROM Paciente p WHERE LOWER(p.dni) = LOWER(:dni)")
     Paciente findByDNI(@Param("dni") String dni);
 
-    //BUscar oaciente por Domicilio Provincia
-//    @Query("SELECT p FROM Paciente p INNER JOIN Domicilio d ON  p.id_domicilio = d.id  WHERE d.provincia= :provincia ")
-//    List<Paciente> findByProvincia(@Param("provincia") String provincia);
+    //Buscar paciente por Domicilio Provincia
+    @Query("SELECT p FROM Paciente p INNER JOIN Domicilio d WHERE d.provincia= :provincia ")
+    List<Paciente> findByProvincia(@Param("provincia") String provincia);
 
+//    @Query("SELECT p FROM Paciente p WHERE LOWER(p.domicilio.provincia) LIKE LOWER(CONCAT('%', :provincia, '%'))")
+//    List<Paciente> buscarPorProvinciaLike(@Param("provincia") String provincia);
+//
 
 }

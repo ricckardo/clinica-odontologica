@@ -8,10 +8,12 @@ import dh.backend.clinicamvc.dto.response.TurnoResponseDto;
 import dh.backend.clinicamvc.entity.Paciente;
 import dh.backend.clinicamvc.entity.Odontologo;
 import dh.backend.clinicamvc.entity.Turno;
+import dh.backend.clinicamvc.exception.ResourcesNotFoundException;
 import dh.backend.clinicamvc.repository.IOdontologoRepository;
 import dh.backend.clinicamvc.repository.IPacienteRepository;
 import dh.backend.clinicamvc.repository.ITurnoRepository;
 import dh.backend.clinicamvc.service.ITurnoService;
+import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,7 +42,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoResponseDto registrarTurno(TurnoRequestDto turnoRequestDto) {
+    public TurnoResponseDto registrarTurno(TurnoRequestDto turnoRequestDto) throws BadRequestException {
         Optional<Paciente> p = pacienteRepository.findById(turnoRequestDto.getPaciente_id());
         Optional<Odontologo> o = odontologoRepository.findById(turnoRequestDto.getOdontologo_id());
         Turno turnoARegistrar = new Turno();
@@ -80,10 +82,15 @@ public class TurnoService implements ITurnoService {
 //            turnoADevolver.setPaciente(pacienteResponseDTO);
 //            turnoADevolver.setOdontologo(odontologoResponseDto);
 //            turnoADevolver.setFecha(String.valueOf(turnoGuardado.getFecha()));
-
+            LOGGER.info("Turno registrado: " + turnoADevolver);
+            return turnoADevolver;
+        }else{
+            LOGGER.info("El Turno no se puede registrar por que el paciente :" +  p.isPresent() + " , odontologo : " +o.isPresent() );
+            throw new BadRequestException("{\"messages\":  \"El paciente u odontologo no existen\"}");
         }
-        LOGGER.info("Turno registrado: " + turnoADevolver);
-        return turnoADevolver;
+
+
+
     }
 
     @Override
@@ -147,8 +154,17 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public void eliminarTurno(Integer id) {
-        turnoRepository.deleteById(id);
+    public void eliminarTurno(Integer id) throws ResourcesNotFoundException {
+        Optional<Turno> optionalTurno = turnoRepository.findById(id);
+
+        if(optionalTurno.isPresent()){
+            LOGGER.info("Borrando Turno con id: " + id  );
+            turnoRepository.deleteById(id);
+        }else{
+            throw  new ResourcesNotFoundException("{\"messages\":  \"Turno no encontrado\"}");
+        }
+
+
     }
 
 

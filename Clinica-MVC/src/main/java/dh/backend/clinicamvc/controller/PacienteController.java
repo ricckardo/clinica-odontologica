@@ -1,7 +1,9 @@
 package dh.backend.clinicamvc.controller;
 
 import dh.backend.clinicamvc.entity.Paciente;
+import dh.backend.clinicamvc.exception.ResourcesNotFoundException;
 import dh.backend.clinicamvc.service.IPacienteService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,10 @@ public class PacienteController {
     * http://localhost:8080/pacientes
     * */
     @PostMapping
-    public ResponseEntity<Paciente>  registrarPaciente(@RequestBody Paciente paciente){
+    public ResponseEntity<Paciente>  registrarPaciente(@RequestBody Paciente paciente) throws BadRequestException {
         Paciente pacienteARetornar = pacienteService.registrarPacientes(paciente);
-        if(pacienteARetornar==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(pacienteARetornar);
-        }
+
     }
 
     /*
@@ -69,36 +68,26 @@ public class PacienteController {
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<String>  borrarPaciente(@PathVariable Integer id) {
-        Optional<Paciente> pacienteOptional = pacienteService.buscarPacientesPorId(id);
-        if(pacienteOptional.isPresent()){
+    public ResponseEntity<String>  borrarPaciente(@PathVariable Integer id) throws ResourcesNotFoundException {
             pacienteService.eliminarPaciente(id);
             return ResponseEntity.ok("{\"messages\":  \"Paciente eliminado\"}");
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
 
     }
 
     @GetMapping("/dni")
-    public ResponseEntity<Paciente> buscarPacientePorDNI(@RequestParam String dni){
-        Paciente p = pacienteService.buscarPacienteporDNI(dni);
-        if(p != null){
-            return ResponseEntity.ok(p);
+    public ResponseEntity<Paciente> buscarPacientePorDNI(@RequestParam String dni) throws ResourcesNotFoundException, BadRequestException {
+            return ResponseEntity.ok(pacienteService.buscarPacienteporDNI(dni));
+    }
+
+    @GetMapping("/provincia")
+    public ResponseEntity<List<Paciente>> buscarPacientePorProvincia(@RequestParam String provincia){
+        List<Paciente> listaPacientes = pacienteService.buscarPacienteDomicilioPorProvincia(provincia);
+        if( listaPacientes.size() > 0 ){
+            return ResponseEntity.ok(listaPacientes);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-//    @GetMapping("/provincia")
-//    public ResponseEntity<List<Paciente>> buscarPacientePorProvincia(@RequestParam String provincia){
-//        List<Paciente> listaPacientes = pacienteService.buscarPacienteDomicilioPorProvincia(provincia);
-//        if( listaPacientes.size() > 0 ){
-//            return ResponseEntity.ok(listaPacientes);
-//        }else{
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
 
 
 

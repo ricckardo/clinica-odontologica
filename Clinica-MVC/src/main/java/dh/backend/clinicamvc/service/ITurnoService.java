@@ -2,6 +2,8 @@ package dh.backend.clinicamvc.service;
 
 import dh.backend.clinicamvc.dto.request.TurnoRequestDto;
 import dh.backend.clinicamvc.dto.response.TurnoResponseDto;
+import dh.backend.clinicamvc.exception.ResourcesNotFoundException;
+import org.apache.coyote.BadRequestException;
 
 
 import java.time.LocalDate;
@@ -10,14 +12,14 @@ import java.util.Optional;
 
 /* Clase pasamanos */
 public interface ITurnoService {
-    TurnoResponseDto registrarTurno(TurnoRequestDto turnoRequestDto);
+    TurnoResponseDto registrarTurno(TurnoRequestDto turnoRequestDto) throws BadRequestException;
 
     TurnoResponseDto buscarTurnoPorId(Integer idTurno);
 
     List<TurnoResponseDto> buscarTodosLosTurnos();
 
     void actualizarTurno(Integer id, TurnoRequestDto turnoRequestDto);
-    void eliminarTurno(Integer id);
+    void eliminarTurno(Integer id) throws ResourcesNotFoundException;
 
     //Metodos con HQL - Hibernate - JPA
     List<TurnoResponseDto> buscarTurnoEntreFechas(LocalDate startDate, LocalDate endDate);

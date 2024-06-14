@@ -1,9 +1,11 @@
 package dh.backend.clinicamvc.controller;
 
 import dh.backend.clinicamvc.entity.Odontologo;
+import dh.backend.clinicamvc.exception.ResourcesNotFoundException;
 import dh.backend.clinicamvc.service.IOdontologoService;
 
 import dh.backend.clinicamvc.service.impl.OdontologoService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +27,9 @@ public class OdontologoController {
     * http://localhost:8080/odontologos
     * */
     @PostMapping
-    public ResponseEntity<Odontologo>  registrarOdontologo(@RequestBody Odontologo Odontologo){
-        Odontologo OdontologoARetornar = odontologoService.registrarOdontologo(Odontologo);
-        if(OdontologoARetornar==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(OdontologoARetornar);
-        }
+    public ResponseEntity<Odontologo>  registrarOdontologo(@RequestBody Odontologo odontologo) throws BadRequestException {
+         Odontologo OdontologoARetornar =  odontologoService.registrarOdontologo(odontologo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(OdontologoARetornar);
     }
 
     /*
@@ -77,14 +75,10 @@ public class OdontologoController {
      * http://localhost:8080/odontologos/3
      * */
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<String>  borrarOdontologo(@PathVariable Integer id) {
-        Optional<Odontologo> odontologoOptional = odontologoService.buscarOdontologoPorId(id);
-        if (odontologoOptional.isPresent()) {
+    public ResponseEntity<String>  borrarOdontologo(@PathVariable Integer id) throws ResourcesNotFoundException {
             odontologoService.eliminarOdontologo(id);
             return ResponseEntity.ok("{\"messages\":  \"Odontologo eliminado\"}");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+
     }
 
     @GetMapping("/apellido/{apellido}")

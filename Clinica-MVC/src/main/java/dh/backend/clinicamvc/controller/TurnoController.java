@@ -3,7 +3,9 @@ package dh.backend.clinicamvc.controller;
 import dh.backend.clinicamvc.dto.request.TurnoRequestDto;
 import dh.backend.clinicamvc.dto.response.TurnoResponseDto;
 import dh.backend.clinicamvc.entity.Turno;
+import dh.backend.clinicamvc.exception.ResourcesNotFoundException;
 import dh.backend.clinicamvc.service.ITurnoService;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,14 +35,10 @@ public class TurnoController {
 
     /* POST*/
     /* http://localhost:8080/turnos */
-    @PostMapping
-    public ResponseEntity <TurnoResponseDto> registrarTurno(@RequestBody TurnoRequestDto turnoRequestDto){
+    @PostMapping(produces = "application/json")
+    public ResponseEntity <TurnoResponseDto> registrarTurno(@RequestBody TurnoRequestDto turnoRequestDto) throws BadRequestException {
         TurnoResponseDto turnoResponseDtoADevolver = turnoService.registrarTurno(turnoRequestDto);
-        if(turnoResponseDtoADevolver != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(turnoResponseDtoADevolver);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(turnoResponseDtoADevolver);
     }
 
     /* GET*/
@@ -95,18 +93,11 @@ public class TurnoController {
     /*PATH VARIABLE*/
     /* http://localhost:8080/pacientes/2 */
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<String> borrarTurno(@PathVariable Integer id){
-        /* Validar exista el turno ants de actualizarlo */
-        TurnoResponseDto turnoResponseDtoAValidar = turnoService.buscarTurnoPorId(id);
-
-        if(turnoResponseDtoAValidar != null ){
-            turnoService.eliminarTurno(id);
-            return ResponseEntity.ok("{\"messages\":  \"Turno eliminado\"}");
-        }else{
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
+    public ResponseEntity<String> borrarTurno(@PathVariable Integer id) throws ResourcesNotFoundException {
+        turnoService.eliminarTurno(id);
+        return ResponseEntity.ok("{\"messages\":  \"Turno eliminado\"}");
     }
+
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @GetMapping("/fechas")
     public ResponseEntity<List<TurnoResponseDto>> buscarTurnoEntreFechas(@RequestParam String inicio, @RequestParam String fin){

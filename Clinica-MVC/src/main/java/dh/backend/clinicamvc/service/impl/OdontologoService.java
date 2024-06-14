@@ -2,8 +2,10 @@ package dh.backend.clinicamvc.service.impl;
 
 
 import dh.backend.clinicamvc.entity.Odontologo;
+import dh.backend.clinicamvc.exception.ResourcesNotFoundException;
 import dh.backend.clinicamvc.repository.IOdontologoRepository;
 import dh.backend.clinicamvc.service.IOdontologoService;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +22,21 @@ public class OdontologoService implements IOdontologoService {
 
     /*Inyeccion de dependencias por constructor*/
     public OdontologoService(IOdontologoRepository odontologoRepository) {
-
         this.odontologoRepository = odontologoRepository;
     }
 
     @Override
-    public Odontologo registrarOdontologo(Odontologo odontolo){
-        LOGGER.info("Registrando : " + odontologoRepository.save(odontolo) );
-        return odontologoRepository.save(odontolo);
+    public Odontologo registrarOdontologo(Odontologo odontolo) throws BadRequestException {
+
+        if(odontolo.getNombre() != null && odontolo.getApellido() != null){
+            LOGGER.info("Registrando : " + odontologoRepository.save(odontolo) );
+            Odontologo o = odontologoRepository.save(odontolo);
+            return o;
+        }else{
+            LOGGER.info("Odontologo no (Guardado) : " + odontolo );
+            throw new BadRequestException("{\"messages\":  \"PaOdontologo no registrado\"}");
+        }
+
     }
 
     @Override
@@ -51,9 +60,17 @@ public class OdontologoService implements IOdontologoService {
     }
 
     @Override
-    public void eliminarOdontologo(Integer id) {
-        LOGGER.info("Borrando Odontologo con id: " + id  );
-        odontologoRepository.deleteById(id);
+    public void eliminarOdontologo(Integer id) throws ResourcesNotFoundException {
+        Optional<Odontologo> optionalOdontologo = odontologoRepository.findById(id);
+
+        if(optionalOdontologo.isPresent()){
+            LOGGER.info("Borrando Odontologo con id: " + id  );
+            odontologoRepository.deleteById(id);
+        }else{
+            LOGGER.info("No se encontro Odontologo con id: " + id  );
+            throw new ResourcesNotFoundException("{\"messages\":  \"Turno no encontrado\"}");
+        }
+
     }
 
     /**
